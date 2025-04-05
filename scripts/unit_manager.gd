@@ -9,6 +9,7 @@ var units_selected: Dictionary[int, bool] = {}
 func _ready() -> void:
 	cursor.drag_start.connect(_deselect_units)
 	cursor.drag_end.connect(_select_units)
+	cursor.command_unit.connect(_command_units)
 
 
 func _select_units(ids: Dictionary[int, bool]) -> void:
@@ -28,3 +29,7 @@ func _deselect_units() -> void:
 		if unit is Unit:
 			unit.deselect()
 			units_selected.erase(id)
+
+
+func _command_units(pos: Vector2, target: Unit) -> void:
+	pass

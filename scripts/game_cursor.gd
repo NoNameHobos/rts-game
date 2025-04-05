@@ -4,6 +4,7 @@ class_name GameCursor
 
 signal drag_start()
 signal drag_end(ids: Dictionary[int, bool])
+signal command_unit(pos: Vector2, target: Unit)
 
 @export
 var box_color: Color = Color.AQUA
@@ -51,22 +52,24 @@ func _area_exited(area: Area2D) -> void:
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
-		if event.button_index != MOUSE_BUTTON_LEFT:
-			return
-			
-		# on click then enter drag
-		if not is_dragging and event.pressed:
-			is_dragging = true
-			dragging_coord = get_viewport().get_mouse_position()
-			drag_start.emit()
-			area_2d.monitoring = true
-		# on release and entered drag then stop drag
-		elif is_dragging and not event.pressed:
-			is_dragging = false
-			drag_end.emit(selected_units)
-			selected_units.clear()
-			
-			area_2d.monitoring = false
+		if event.button_index == MOUSE_BUTTON_LEFT:
+				
+			# on click then enter drag
+			if not is_dragging and event.pressed:
+				is_dragging = true
+				dragging_coord = get_viewport().get_mouse_position()
+				drag_start.emit()
+				area_2d.monitoring = true
+			# on release and entered drag then stop drag
+			elif is_dragging and not event.pressed:
+				is_dragging = false
+				drag_end.emit(selected_units)
+				selected_units.clear()
+				
+				area_2d.monitoring = false
+		elif event.button_index == MOUSE_BUTTON_RIGHT:
+			command_unit.emit(get_viewport().get_mouse_position(), null)
+		
 
 
 func _process(_delta: float) -> void:
