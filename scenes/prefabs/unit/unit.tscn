@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://bb5ehp5n6p010"]
+[gd_scene load_steps=5 format=3 uid="uid://bb5ehp5n6p010"]
 
 [ext_resource type="Script" uid="uid://bhu2r8bli8i6o" path="res://scenes/prefabs/unit/unit.gd" id="1_342nf"]
 [ext_resource type="Texture2D" uid="uid://d148l7aj4s78s" path="res://assets/unit.png" id="1_i6jyr"]
+[ext_resource type="Texture2D" uid="uid://dd4nspfphiwee" path="res://assets/selector.png" id="3_0bgd4"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_342nf"]
 radius = 16.0
@@ -10,7 +11,7 @@ radius = 16.0
 texture_filter = 1
 script = ExtResource("1_342nf")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="Base" type="Sprite2D" parent="."]
 texture = ExtResource("1_i6jyr")
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
@@ -19,3 +20,7 @@ texture = ExtResource("1_i6jyr")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SelectableArea"]
 shape = SubResource("CircleShape2D_342nf")
+
+[node name="Selector" type="Sprite2D" parent="."]
+visible = false
+texture = ExtResource("3_0bgd4")
