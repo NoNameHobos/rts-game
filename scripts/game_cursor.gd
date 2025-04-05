@@ -16,6 +16,9 @@ var is_dragging: bool = false
 var dragging_coord: Vector2 = Vector2.ZERO
 var selection_rect: Rect2
 
+
+var selected_units: Dictionary[int, bool] = {}
+
 func _ready() -> void:
 	
 	area_2d = Area2D.new()
@@ -25,8 +28,18 @@ func _ready() -> void:
 	collision_rect = RectangleShape2D.new()
 	collision_shape.shape = collision_rect
 	
+	area_2d.add_child(collision_shape)
+	
+	area_2d.area_entered.connect(_area_entered)
+	
 	
 	z_index = RenderingServer.CANVAS_ITEM_Z_MAX
+
+func _area_entered(area: Area2D) -> void:
+	selected_units[area.owner.get_instance_id()] = true
+
+func _area_exited(area: Area2D) -> void:
+	selected_units.erase(area.owner.get_instance_id())
 
 func _input(event: InputEvent) -> void:
 	
@@ -42,6 +55,9 @@ func _input(event: InputEvent) -> void:
 func _process(_delta: float) -> void:
 	
 	if is_dragging:
+		for id in selected_units.keys():
+			var unit: Unit = instance_from_id(id)
+			unit.deselect()
 		var mouse_pos: Vector2 = get_viewport().get_mouse_position()
 		
 		var pos: Vector2
@@ -76,6 +92,10 @@ func _process(_delta: float) -> void:
 	else:
 		area_2d.monitoring = false
 		
+		for id in selected_units.keys():
+			var unit: Unit = instance_from_id(id)
+			unit.select()
+			
 	
 	
 	queue_redraw()
