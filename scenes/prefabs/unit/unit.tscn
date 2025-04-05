@@ -1,11 +1,21 @@
-[gd_scene load_steps=2 format=3 uid="uid://bb5ehp5n6p010"]
+[gd_scene load_steps=4 format=3 uid="uid://bb5ehp5n6p010"]
 
+[ext_resource type="Script" uid="uid://bhu2r8bli8i6o" path="res://scenes/prefabs/unit/unit.gd" id="1_342nf"]
 [ext_resource type="Texture2D" uid="uid://d148l7aj4s78s" path="res://assets/unit.png" id="1_i6jyr"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_i6jyr"]
+size = Vector2(32, 32)
 
 [node name="Unit" type="Node2D"]
 texture_filter = 1
+script = ExtResource("1_342nf")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("1_i6jyr")
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+
+[node name="SelectableArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SelectableArea"]
+shape = SubResource("RectangleShape2D_i6jyr")
