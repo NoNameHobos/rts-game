@@ -16,7 +16,7 @@ var dragging_coord: Vector2 = Vector2.ZERO
 
 
 func _ready() -> void:
-	z_index = 10001000
+	z_index = RenderingServer.CANVAS_ITEM_Z_MAX
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
