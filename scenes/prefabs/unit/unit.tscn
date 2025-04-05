@@ -1,11 +1,16 @@
-[gd_scene load_steps=5 format=3 uid="uid://bb5ehp5n6p010"]
+[gd_scene load_steps=7 format=3 uid="uid://bb5ehp5n6p010"]
 
 [ext_resource type="Script" uid="uid://bhu2r8bli8i6o" path="res://scenes/prefabs/unit/unit.gd" id="1_342nf"]
 [ext_resource type="Texture2D" uid="uid://d148l7aj4s78s" path="res://assets/unit.png" id="1_i6jyr"]
 [ext_resource type="Texture2D" uid="uid://dd4nspfphiwee" path="res://assets/selector.png" id="3_0bgd4"]
+[ext_resource type="Shader" uid="uid://cdwwu8tautdwv" path="res://resources/material/unit_selector_shader.gdshader" id="3_l1s5l"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_342nf"]
 radius = 16.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_dqf56"]
+shader = ExtResource("3_l1s5l")
+shader_parameter/team_color = Color(0.519243, 0.000147906, 0.501391, 1)
 
 [node name="Unit" type="Node2D"]
 texture_filter = 1
@@ -23,4 +28,5 @@ shape = SubResource("CircleShape2D_342nf")
 
 [node name="Selector" type="Sprite2D" parent="."]
 visible = false
+material = SubResource("ShaderMaterial_dqf56")
 texture = ExtResource("3_0bgd4")
