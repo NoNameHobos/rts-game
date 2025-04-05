@@ -7,3 +7,5 @@ texture_filter = 1
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("1_i6jyr")
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]

@@ -11,5 +11,10 @@ config_version=5
 [application]
 
 config/name="rts-quick-game"
+run/main_scene="uid://cumm4dbxxjxed"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://icon.svg"
+
+[autoload]
+
+Teams="*res://scripts/autoloads/teams.gd"
