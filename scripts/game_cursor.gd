@@ -1,6 +1,10 @@
 extends Node2D
 class_name GameCursor
 
+
+signal unit_selected(id: int)
+signal unit_deselected(id: int)
+
 @export
 var box_color: Color = Color.AQUA
 @export_range(0,1,0.01)
@@ -41,23 +45,32 @@ func _area_entered(area: Area2D) -> void:
 func _area_exited(area: Area2D) -> void:
 	selected_units.erase(area.owner.get_instance_id())
 
+
+
 func _input(event: InputEvent) -> void:
-	
-	
 	if event is InputEventMouseButton:
-		if not is_dragging and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		if event.button_index != MOUSE_BUTTON_LEFT:
+			return
+			
+		# on click then enter drag
+		if not is_dragging and event.pressed:
 			is_dragging = true
 			dragging_coord = get_viewport().get_mouse_position()
-		elif is_dragging and not event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+			for id in selected_units.keys():
+				unit_deselected.emit(id)
+			selected_units.clear()
+		# on release and entered drag then stop drag
+		elif is_dragging and not event.pressed:
 			is_dragging = false
+			area_2d.monitoring = false
+			for id in selected_units.keys():
+				unit_selected.emit(id)
 
 
 func _process(_delta: float) -> void:
 	
 	if is_dragging:
-		for id in selected_units.keys():
-			var unit: Unit = instance_from_id(id)
-			unit.deselect()
+	
 		var mouse_pos: Vector2 = get_viewport().get_mouse_position()
 		
 		var pos: Vector2
@@ -89,12 +102,6 @@ func _process(_delta: float) -> void:
 		area_2d.monitoring = true
 		area_2d.position = pos
 		collision_rect.size = size
-	else:
-		area_2d.monitoring = false
-		
-		for id in selected_units.keys():
-			var unit: Unit = instance_from_id(id)
-			unit.select()
 			
 	
 	

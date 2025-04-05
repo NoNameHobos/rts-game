@@ -10,9 +10,9 @@ var selected: bool = false
 
 func select() -> void:
 	selected = true
-	## DRAW SOME STUFF, ALSO TELL THE UNIT MANAGER
+	## DRAW STUFF
 
 
 func deselect() -> void:
 	selected = false
-	## UNDRAW SOME STUFF, ALSO TELL THE UNIT MANAGER
+	## UNDRAW SOME STUFF
