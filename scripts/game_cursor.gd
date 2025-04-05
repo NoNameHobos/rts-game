@@ -52,24 +52,32 @@ func _area_exited(area: Area2D) -> void:
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
-		if event.button_index == MOUSE_BUTTON_LEFT:
-				
-			# on click then enter drag
-			if not is_dragging and event.pressed:
-				is_dragging = true
-				dragging_coord = get_viewport().get_mouse_position()
-				drag_start.emit()
-				area_2d.monitoring = true
-			# on release and entered drag then stop drag
-			elif is_dragging and not event.pressed:
-				is_dragging = false
-				drag_end.emit(selected_units)
-				selected_units.clear()
-				
-				area_2d.monitoring = false
-		elif event.button_index == MOUSE_BUTTON_RIGHT:
-			command_unit.emit(get_viewport().get_mouse_position(), null)
 		
+		match event.button_index:
+			MOUSE_BUTTON_LEFT:
+				_handle_select(event)
+			MOUSE_BUTTON_RIGHT:
+				_handle_command(event)
+			
+
+		
+
+func _handle_select(event: InputEventMouseButton) -> void:
+	# on click then enter drag
+	if not is_dragging and event.pressed:
+		is_dragging = true
+		dragging_coord = get_viewport().get_mouse_position()
+		drag_start.emit()
+		area_2d.monitoring = true
+	# on release and entered drag then stop drag
+	elif is_dragging and not event.pressed:
+		is_dragging = false
+		drag_end.emit(selected_units)
+		selected_units.clear()
+		
+		area_2d.monitoring = false
+func _handle_command(event: InputEventMouseButton) -> void:
+		command_unit.emit(get_viewport().get_mouse_position(), null)
 
 
 func _process(_delta: float) -> void:
