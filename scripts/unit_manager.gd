@@ -21,7 +21,7 @@ func _select_units(ids: Dictionary[int, bool]) -> void:
 		if unit is Unit:
 			unit.select()
 			units_selected[id] = true
-	
+
 
 func _deselect_units() -> void:
 	for id in units_selected.keys():
@@ -32,4 +32,7 @@ func _deselect_units() -> void:
 
 
 func _command_units(pos: Vector2, target: Unit) -> void:
-	pass
+	for id in units_selected.keys():
+		var unit = instance_from_id(id)
+		if unit is Unit:
+			unit.move_to(pos)

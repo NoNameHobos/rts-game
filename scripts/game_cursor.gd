@@ -8,6 +8,8 @@ signal command_unit(pos: Vector2, target: Unit)
 
 @export
 var box_color: Color = Color.AQUA
+@export
+var team: int = Teams.PLAYER_1
 @export_range(0,1,0.01)
 var box_alpha: float = 0.5
 @export_range(0,1,0.01)
@@ -43,7 +45,7 @@ func _ready() -> void:
 
 
 func _area_entered(area: Area2D) -> void:
-	if area.owner is Unit:
+	if area.owner is Unit and (area.owner as Unit).team == team:
 		selected_units[area.owner.get_instance_id()] = true
 
 func _area_exited(area: Area2D) -> void:

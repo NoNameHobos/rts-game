@@ -12,13 +12,13 @@ class_name Unit
 
 func _ready():
 	_init_nav_agent()
+	selector_sprite.material = selector_sprite.material.duplicate(true)
 
 # Select Logic
 var selected: bool = false
 
 
 func _process(_delta: float) -> void:
-	
 	(selector_sprite.material as ShaderMaterial).set_shader_parameter("team_color", Teams.COLORS[team])
 
 func select() -> void:

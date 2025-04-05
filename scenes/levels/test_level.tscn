@@ -24,3 +24,7 @@ metadata/_custom_type_script = "uid://b3vne67drycwg"
 script = ExtResource("4_v45ci")
 cursor = NodePath("../GameCursor")
 metadata/_custom_type_script = "uid://3ksh0f7bjjpn"
+
+[node name="Unit2" parent="." instance=ExtResource("2_yautc")]
+position = Vector2(777, 220)
+team = 1
