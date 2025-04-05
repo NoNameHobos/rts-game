@@ -13,9 +13,7 @@ func _ready() -> void:
 
 
 func _select_units(ids: Dictionary[int, bool]) -> void:
-	print(ids)
 	for id in ids.keys():
-		print(id)
 		var unit = instance_from_id(id)
 		
 		if unit is Unit:

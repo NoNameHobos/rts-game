@@ -10,6 +10,9 @@ class_name Unit
 @onready var sprite: Sprite2D = $Base
 @onready var nav_agent: NavigationAgent2D = $NavigationAgent2D
 
+@onready
+var _target_sprite_angle : float = sprite.rotation;
+
 func _ready():
 	_init_nav_agent()
 	selector_sprite.material = selector_sprite.material.duplicate(true)
@@ -18,8 +21,11 @@ func _ready():
 var selected: bool = false
 
 
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
+	# "Funky shader thing" : dan
 	(selector_sprite.material as ShaderMaterial).set_shader_parameter("team_color", Teams.COLORS[team])
+	
+	sprite.rotation = lerp_angle(sprite.rotation, _target_sprite_angle, 12.5 * delta)
 
 func select() -> void:
 	selected = true
@@ -55,4 +61,5 @@ func move_path(delta):
 
 	#velocity = current_agent_position.direction_to(next_path_position) * MOVE_SPEED
 	#move_and_slide()
-	self.position = self.position.move_toward(next_path_position, MOVE_SPEED)
+	self.position = self.position.move_toward(next_path_position, MOVE_SPEED * delta)
+	self._target_sprite_angle = self.to_local(next_path_position).angle()

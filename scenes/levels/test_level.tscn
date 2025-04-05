@@ -14,6 +14,8 @@ tile_set = ExtResource("1_jbqir")
 
 [node name="Unit" parent="." instance=ExtResource("2_yautc")]
 position = Vector2(287, 271)
+MIN_DIST = 16.0
+MOVE_SPEED = 100.0
 
 [node name="GameCursor" type="Node2D" parent="."]
 script = ExtResource("3_fr1um")
