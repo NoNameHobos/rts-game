@@ -7,17 +7,24 @@ class_name UnitManager
 var units_selected: Dictionary[int, bool] = {}
 
 func _ready() -> void:
-	cursor.unit_selected.connect(_unit_selected)
-	cursor.unit_deselected.connect(_unit_deselected)
+	cursor.drag_start.connect(_deselect_units)
+	cursor.drag_end.connect(_select_units)
 
 
-func _unit_selected(id: int) -> void:
-	var unit = instance_from_id(id)
-	if unit is Unit:
-		unit.select()
+func _select_units(ids: Dictionary[int, bool]) -> void:
+	print(ids)
+	for id in ids.keys():
+		print(id)
+		var unit = instance_from_id(id)
+		
+		if unit is Unit:
+			unit.select()
+			units_selected[id] = true
 	
 
-func _unit_deselected(id: int) -> void:
-	var unit = instance_from_id(id)
-	if unit is Unit:
-		unit.deselect()
+func _deselect_units() -> void:
+	for id in units_selected.keys():
+		var unit = instance_from_id(id)
+		if unit is Unit:
+			unit.deselect()
+			units_selected.erase(id)

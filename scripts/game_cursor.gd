@@ -2,8 +2,8 @@ extends Node2D
 class_name GameCursor
 
 
-signal unit_selected(id: int)
-signal unit_deselected(id: int)
+signal drag_start()
+signal drag_end(ids: Dictionary[int, bool])
 
 @export
 var box_color: Color = Color.AQUA
@@ -35,17 +35,19 @@ func _ready() -> void:
 	area_2d.add_child(collision_shape)
 	
 	area_2d.area_entered.connect(_area_entered)
-	
+	area_2d.area_exited.connect(_area_exited)
 	
 	z_index = RenderingServer.CANVAS_ITEM_Z_MAX
 
+
+
 func _area_entered(area: Area2D) -> void:
-	selected_units[area.owner.get_instance_id()] = true
+	if area.owner is Unit:
+		selected_units[area.owner.get_instance_id()] = true
 
 func _area_exited(area: Area2D) -> void:
-	selected_units.erase(area.owner.get_instance_id())
-
-
+	if area.owner.get_instance_id() in selected_units.keys():
+		selected_units.erase(area.owner.get_instance_id())
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
@@ -56,15 +58,15 @@ func _input(event: InputEvent) -> void:
 		if not is_dragging and event.pressed:
 			is_dragging = true
 			dragging_coord = get_viewport().get_mouse_position()
-			for id in selected_units.keys():
-				unit_deselected.emit(id)
-			selected_units.clear()
+			drag_start.emit()
+			area_2d.monitoring = true
 		# on release and entered drag then stop drag
 		elif is_dragging and not event.pressed:
 			is_dragging = false
+			drag_end.emit(selected_units)
+			selected_units.clear()
+			
 			area_2d.monitoring = false
-			for id in selected_units.keys():
-				unit_selected.emit(id)
 
 
 func _process(_delta: float) -> void:
@@ -98,12 +100,11 @@ func _process(_delta: float) -> void:
 		pos = Vector2(p_x, p_y)
 		size = Vector2(s_x, s_y)
 		
+		
+		
 		selection_rect = Rect2(pos, size)
-		area_2d.monitoring = true
-		area_2d.position = pos
+		area_2d.position = pos+size/2.0
 		collision_rect.size = size
-			
-	
 	
 	queue_redraw()
 
